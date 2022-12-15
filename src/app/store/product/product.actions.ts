@@ -1,16 +1,15 @@
 import { createAction, props } from '@ngrx/store'
-import { ProductState } from './product.state'
+import { Product } from './product.state'
 
 export const ProductActionType = {
 	Create: '[Product] Create',
 	Delete: '[Product] Delete',
-	Update: '[Product] Update',
-	Get: '[Product] Get'
+	Update: '[Product] Update'
 }
 
 export const createProduct = createAction(
 	ProductActionType.Create,
-	props<{ payload: { name: string; code: number } }>()
+	props<{ payload: Product }>()
 )
 
 export const deleteProduct = createAction(
@@ -20,7 +19,5 @@ export const deleteProduct = createAction(
 
 export const updateProduct = createAction(
 	ProductActionType.Update,
-	props<{ payload: ProductState }>()
+	props<{ payload: Product }>()
 )
-
-export const getProduct = createAction

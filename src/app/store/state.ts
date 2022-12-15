@@ -1,11 +1,6 @@
-import { ProductState } from './product.state'
+import { Product } from './product/product.state'
 
 export interface AppState {
 	counter: number
-	products: ProductState[]
-}
-
-export const CounterActionType = {
-	INCREMENT: 'INCREMENT',
-	DECREMENT: 'DECREMENT'
+	products: Product[]
 }

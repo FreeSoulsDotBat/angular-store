@@ -1,9 +1,18 @@
-import { ProductState } from './store/product.state'
+import { Product } from './store/product/product.state'
 import { Component } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { AppState } from './store/state'
 import { NgForm } from '@angular/forms'
+import {
+	createProduct,
+	deleteProduct,
+	updateProduct
+} from './store/product/product.actions'
+import {
+	decrementCounter,
+	incrementCounter
+} from './store/counter/counter.actions'
 
 @Component({
 	selector: 'app-root',
@@ -13,8 +22,8 @@ import { NgForm } from '@angular/forms'
 export class AppComponent {
 	title = 'angular-store'
 	counter$: Observable<number>
-	products$: Observable<ProductState[]>
-	selectedProduct: ProductState
+	products$: Observable<Product[]>
+	selectedProduct: Product
 
 	constructor(private store: Store<AppState>) {
 		this.counter$ = store.select('counter')
@@ -36,40 +45,31 @@ export class AppComponent {
 	}
 
 	saveProduct(f: NgForm) {
-		this.store.dispatch({
-			type: 'INCREMENT'
-		})
+		this.store.dispatch(incrementCounter())
 
-		this.store.dispatch({
-			type: 'CREATE',
-			payload: {
-				name: f.value.name,
-				id: this.generateId(),
-				code: f.value.code
-			}
-		})
+		this.store.dispatch(
+			createProduct({
+				payload: {
+					name: f.value.name,
+					id: this.generateId(),
+					code: f.value.code
+				}
+			})
+		)
 	}
 
 	deleteProduct(id: number) {
-		this.store.dispatch({
-			type: 'DECREMENT'
-		})
+		this.store.dispatch(decrementCounter())
 
-		this.store.dispatch({
-			type: 'DELETE',
-			payload: { id }
-		})
+		this.store.dispatch(deleteProduct({ id }))
 	}
 
-	selectProduct(product: ProductState) {
+	selectProduct(product: Product) {
 		this.selectedProduct = { ...product }
 	}
 
 	updateProduct() {
-		this.store.dispatch({
-			type: 'UPDATE',
-			payload: this.selectedProduct
-		})
+		this.store.dispatch(updateProduct({ payload: this.selectedProduct }))
 		this.selectedProduct = null
 	}
 }
